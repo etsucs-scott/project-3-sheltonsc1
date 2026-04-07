@@ -12,10 +12,5 @@ namespace Minesweeper.Core
         public int AdjacentMines { get; set; }
         public bool IsRevealed { get; set; }
         public bool IsFlagged { get; set; }
-
-        public Tiles() 
-        { 
-            
-        }
     }
 }
