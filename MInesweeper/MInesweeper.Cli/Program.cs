@@ -25,7 +25,7 @@ namespace MInesweeper.Cli
                 while (!gameOver)
                 {
                     RenderBoard(board, revealMines: false);
-                    Console.Write("Enter command (x rox col, y row col, q): ");
+                    Console.Write("Enter command (x row col, y row col, q): ");
                     var input = Console.ReadLine();
                     if (string.IsNullOrWhiteSpace(input))
                     {
