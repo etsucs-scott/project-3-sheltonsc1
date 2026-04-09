@@ -1,43 +1,17 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/ozVFrFMv)
-# CSCI 1260 — Project
+# CSCI 1260 — Project 3: Minesweeper
+Hello and welcome to Minesweeper!
 
-## Project Instructions
-All project requirements, grading criteria, and submission details are provided on **D2L**.  
-Refer to D2L as the *authoritative source* for this assignment.
 
-This repository is intentionally minimal. You are responsible for:
-- Creating the solution and projects
-- Designing the class structure
-- Implementing the required functionality
+# Goal
+The aim of the game is to search the board for a clear path to the other side and to flag mines in order to not blow up.
 
----
 
-## Getting Started (CLI)
+# Getting Started 
+Enter 1, 2, or 3 to select the size of the board you want to sweep
 
-You may use **Visual Studio**, **VS Code**, or the **terminal**.
 
-### Create a solution
-```bash
-dotnet new sln -n ProjectName
-```
+# Controls
+Enter an x cord and y cord to search the area for mines and to flag those cords if you think there is a mine there.
 
-### Create a project (example: console app)
-```bash
-dotnet new console -n ProjectName.App
-```
 
-### Add the project to the solution
-```bash
-dotnet sln add ProjectName.App
-```
-
-### Build and run
-```bash
-dotnet build
-dotnet run --project ProjectName.App
-```
-
-## Notes
-- Commit early and commit often.
-- Your repository history is part of your submission.
-- Update this README with build/run instructions specific to your project.
+# Good Luck and Have Fun!! :D
