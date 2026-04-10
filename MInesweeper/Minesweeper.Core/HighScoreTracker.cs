@@ -8,14 +8,27 @@ namespace Minesweeper.Core
 {
     public class HighScoreTracker
     {
+        /// <summary>
+        /// string for the file path where high scores will be stored.
+        /// </summary>
         private readonly string _filePath;
 
+        /// <summary>
+        /// new instance of the HighScoreTracker class, which takes an optional file path parameter. 
+        /// If no file path is provided, it defaults to "data/HighScores.csv". 
+        /// </summary>
+        /// <param name="filePath"></param>
         public HighScoreTracker(string filePath = "data/HighScores.csv")
         {
             _filePath = filePath;
             EnsureFile();
         }
 
+        /// <summary>
+        /// ensures that there is a file at the specified path. 
+        /// If the directory does not exist, it creates it. 
+        /// If the file does not exist, it creates a new file with a header line.
+        /// </summary>
         public void EnsureFile()
         {
             var directory = Path.GetDirectoryName(_filePath);
@@ -30,6 +43,11 @@ namespace Minesweeper.Core
             }
         }
 
+        /// <summary>
+        /// creates a list of HighScores objects by reading from the specified file path.
+        /// includes a try-catch block to handle any exceptions that may occur during file reading/loading.
+        /// </summary>
+        /// <returns>scores that were loaded from the file</returns>
         public List<HighScores> Load()
         {
             var scores = new List<HighScores>();
@@ -64,6 +82,11 @@ namespace Minesweeper.Core
             return scores;
         }
 
+        /// <summary>
+        /// saves a list of HighScores objects to the specified file path.
+        /// includes a try-catch block to handle any exceptions that may occur during file writing/saving.
+        /// </summary>
+        /// <param name="scores">The high scores to save</param>
         public void Save(List<HighScores> scores)
         {
             try
@@ -82,6 +105,10 @@ namespace Minesweeper.Core
             }
         }
 
+        /// <summary>
+        /// adds scores to the list of high scores and saves it to the file.
+        /// </summary>
+        /// <param name="score">The high score to add</param>
         public void AddScore(HighScores score)
         {
             var scores = Load();
@@ -102,6 +129,11 @@ namespace Minesweeper.Core
             Save(others);
         }
 
+        /// <summary>
+        /// Retrieves the top high scores for a specific board size.
+        /// </summary>
+        /// <param name="size">The size of the board to filter high scores by.</param>
+        /// <returns>An enumerable of the top high scores for the specified size.</returns>
         public IEnumerable<HighScores> GetTopForSize(int size) =>
             Load()
                 .Where(s => s.Size == size)

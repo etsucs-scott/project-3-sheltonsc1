@@ -9,6 +9,13 @@ namespace MinesweeperTests
 {
     public class BoardTests
     {
+        // seed 123 is an example of a fixed seed and is not supposed to be taken into account when evaluating the tests,
+        // as the actual mine placement may differ based on the implementation of the random number generator. 
+        // this applies to the tracker tests as well
+
+        /// <summary>
+        /// Checks if the board has the correct number of mines.
+        /// </summary>
         [Fact]
         public void CheckMineCount()
         {
@@ -24,6 +31,9 @@ namespace MinesweeperTests
             Assert.Equal(10, mines);
         }
 
+        /// <summary>
+        /// Checks if the board correctly calculates the number of adjacent mines for each tile.
+        /// </summary>
         [Fact]
         public void CheckAdjacentCount()
         {
@@ -35,6 +45,10 @@ namespace MinesweeperTests
             Assert.Equal(10, tile.AdjacentMines);
         }
 
+        /// <summary>
+        /// Checks if revealing a mine results in a hit
+        /// and that the game logic correctly identifies it as a loss condition.
+        /// </summary>
         [Fact]
         public void RevealHitMine()
         {
@@ -56,7 +70,10 @@ namespace MinesweeperTests
             board.Reveal(mx, my, out hit);
             Assert.True(hit);
         }
-
+        
+        /// <summary>
+        /// Checks if revealing an empty tile correctly reveals adjacent tiles.
+        /// </summary>
         [Fact]
         public void RevealEmptyTile()
         {
@@ -90,6 +107,10 @@ namespace MinesweeperTests
             Assert.True(anyAdjacentRevealed);
         }
 
+        /// <summary>
+        /// Checks if flagged tiles cannot be revealed and that the game logic correctly 
+        /// prevents revealing a flagged tile.
+        /// </summary>
         [Fact]
         public void UnrevealableFlaggedTile()
         {
@@ -105,6 +126,10 @@ namespace MinesweeperTests
             Assert.False(board[0, 0].IsRevealed);
         }
 
+        /// <summary>
+        /// Checks if all non-mine tiles are revealed amd that 
+        /// the game logic correctly identifies it as a win condition.
+        /// </summary>
         [Fact]
         public void NonMinesRevealed_WinCondition()
         {

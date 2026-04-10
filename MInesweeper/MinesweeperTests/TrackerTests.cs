@@ -9,10 +9,17 @@ namespace MinesweeperTests
 {
     public class TrackerTests
     {
+        /// <summary>
+        /// method to generate a temporary file path for testing purposes. 
+        /// This ensures that each test runs with a clean slate and does not interfere with existing files or other tests. 
+        /// </summary>
+        /// <returns></returns>
         private string TempFile() =>
             Path.Combine(Path.GetTempPath(), Guid.NewGuid() + ".csv");
 
-
+        /// <summary>
+        /// checks for a file missing scenario. It creates a new HighScoreTracker instance with a temporary file path and attempts to load scores from it.
+        /// </summary>
         [Fact]
         public void FileMissingFailsafe()
         {
@@ -25,6 +32,9 @@ namespace MinesweeperTests
             Assert.True(File.Exists(path));
         }
 
+        /// <summary>
+        /// Checks if the tiebreaker logic correctly prioritizes fewer moves when the time is the same.
+        /// </summary>
         [Fact]
         public void FewerMovesWinsTiebreaker()
         {
