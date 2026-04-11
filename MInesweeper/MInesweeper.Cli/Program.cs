@@ -6,9 +6,16 @@ namespace MInesweeper.Cli
     {
         static void Main(string[] args)
         {
+            ///<summary>
+            /// variable to to make a new instace of the HighScoreTracker class to be able to use the methods in that class to save and load high scores for the game
+            /// </summary>
             var hsTracker = new HighScoreTracker();
 
-            while(true)
+            ///<summary>
+            /// a while loop used for the main game loop
+            /// keeps running until the user decides to quit by entering 'q' or by hitting a mine
+            /// </summary>
+            while (true)
             {
                 int size = GetBoardSize();
                 int seed = GetSeedFromUser();
@@ -17,15 +24,21 @@ namespace MInesweeper.Cli
 
                 Console.WriteLine($"Starting game with {size} and seed {seed}");
 
+                /// <summary>
+                /// variables to track the number of moves, the start time of the game, and whether the game is over or won
+                /// </summary>
                 int moves = 0;
                 var start = DateTime.UtcNow;
                 bool gameOver = false;
                 bool win = false;
 
+                /// <summary>
+                /// another while loop for determining the game state and handling user input for revealing tiles, flagging mines, and quitting the game
+                /// </summary>
                 while (!gameOver)
                 {
                     RenderBoard(board, revealMines: false);
-                    Console.Write("Enter command (x row col, y row col, q): ");
+                    Console.Write("Enter command (x row, y col, q for quit, f for flag): ");
                     var input = Console.ReadLine();
                     if (string.IsNullOrWhiteSpace(input))
                     {
@@ -33,6 +46,9 @@ namespace MInesweeper.Cli
                         continue;
                     }
 
+                    /// <summary>
+                    /// variables to parse the user input into a command and coordinates for revealing or flagging tiles
+                    /// </summary>
                     var parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
                     var cmd = parts[0];
 
@@ -47,7 +63,7 @@ namespace MInesweeper.Cli
                         !int.TryParse(parts[1], out int x) || 
                         !int.TryParse(parts[2], out int y))
                     {
-                        Console.WriteLine("Invalid command format. Please use 'x row col' or 'y row col'.");
+                        Console.WriteLine("Invalid command format. Please use 'x row' or 'y col'.");
                         continue;
                     }
 
@@ -57,6 +73,7 @@ namespace MInesweeper.Cli
                         continue;
                     }
 
+                    // checking for hit mines and win conditions after revealing a tile or toggling a flag
                     bool changed = false;
                     if (cmd == "x")
                     {
@@ -88,9 +105,10 @@ namespace MInesweeper.Cli
                     var elapsed = (int)(DateTime.UtcNow - start).TotalSeconds;
                     RenderBoard(board, revealMines: true);
 
+                    // win or lose message and saving high score if the player wins, then returning to the main menu
                     if (win)
                     {
-                        Console.WriteLine($"You Win! :D Time: {elapsed} seconds, Moves: {moves} Seed: {seed}");
+                        Console.WriteLine($"You Win! :D Board Size: {size}x{size}, Time: {elapsed} seconds, Moves: {moves} Seed: {seed}");
                         hsTracker.AddScore(new HighScores 
                         { 
                             Size = size, 
@@ -116,6 +134,12 @@ namespace MInesweeper.Cli
             }
         }
 
+        /// <summary>
+        /// checks for a user-entered seed for random number generation to create the game board. 
+        /// If the user leaves it blank, a time-based seed is used. 
+        /// If the user enters an invalid seed, a time-based seed is also used and an error message is displayed.
+        /// </summary>
+        /// <returns></returns>
         static int GetSeedFromUser()
         {
             Console.Write("Enter a seed (or leave blank for time-based): ");
@@ -134,6 +158,10 @@ namespace MInesweeper.Cli
             return Environment.TickCount;
         }
 
+        /// <summary>
+        /// method for giving the user choice on what size game board they want to play on by entering 1 for small, 2 for medium, or 3 for large.
+        /// </summary>
+        /// <returns></returns>
         static int GetBoardSize()
         {
             while(true)
@@ -159,6 +187,12 @@ namespace MInesweeper.Cli
             }
         }
 
+        /// <summary>
+        /// method for rendering the game board in the console. 
+        /// It displays the current state of each tile, including revealed tiles, flagged tiles, and optionally reveals mines if the game is over.
+        /// </summary>
+        /// <param name="board">The game board to render.</param>
+        /// <param name="revealMines">Whether to reveal mines on the board.</param>
         static void RenderBoard(Board board, bool revealMines)
         {
             int size = board.Size;

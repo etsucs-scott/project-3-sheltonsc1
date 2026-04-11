@@ -8,11 +8,18 @@ namespace Minesweeper.Core
 {
     public class Board
     {
+        /// <summary>
+        /// readonly fields for the created of the board, including the configuration of the game and a 2D array of tiles.
+        /// </summary>
         private readonly GamesConfig _config;
         private readonly Tiles[,] _tiles;
         public int Size => _config.Size;
         public Tiles this[int x, int y] => _tiles[x, y];
 
+        /// <summary>
+        /// new instance of the Board class, which takes a GamesConfig object as a parameter and creates a 2D array of Tiles based on the size specified in the configuration.
+        /// </summary>
+        /// <param name="config"></param>
         public Board(GamesConfig config)
         {
             _config = config;
@@ -28,6 +35,10 @@ namespace Minesweeper.Core
             CalculateAdjacent();
         }
 
+        /// <summary>
+        /// method for "placing mines" on the board. 
+        /// uses a random number gen with the seed specified in the config to ensure reproducibility.
+        /// </summary>
         public void PlaceMines()
         {
             var rand = new Random(_config.Seed);
@@ -44,6 +55,9 @@ namespace Minesweeper.Core
             }
         }
 
+        /// <summary>
+        /// method for calculating the number of adjacent mines for each tile on the board.
+        /// </summary>
         public void CalculateAdjacent()
         {
             for (int x = 0; x < Size; x++)
@@ -60,6 +74,12 @@ namespace Minesweeper.Core
             }
         }
 
+        /// <summary>
+        /// method for iterating/scanning over the neighbors of a given tile (x, y) and performing an action on each neighbor's coordinates.
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile</param>
+        /// <param name="y">The y-coordinate of the tile</param>
+        /// <param name="action">The action to perform on each neighbor's coordinates</param>
         public void ForEachNeighbor(int x, int y, Action<int, int> action)
         {
             for (int dx = -1; dx <= 1; dx++)
@@ -74,6 +94,13 @@ namespace Minesweeper.Core
             }
         }
 
+        /// <summary>
+        /// method for revealing a tile at the specified coordinates (x, y).
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile</param>
+        /// <param name="y">The y-coordinate of the tile</param>
+        /// <param name="hitMine">Output parameter indicating if a mine was hit</param>
+        /// <returns>True if the tile was successfully revealed, false otherwise</returns>
         public bool Reveal(int x, int y, out bool hitMine)
         {
             hitMine = false;
@@ -96,6 +123,12 @@ namespace Minesweeper.Core
             return true;
         }
 
+        /// <summary>
+        /// method for revealing all connected tiles with zero adjacent mines, starting from the specified coordinates (x, y)
+        /// thus creating a "cascade"
+        /// </summary>
+        /// <param name="x">The x-coordinate of the starting tile</param>
+        /// <param name="y">The y-coordinate of the starting tile</param>
         public void CascadeReveal(int x, int y)
         {
             var queue = new Queue<(int x, int y)>();
@@ -117,6 +150,12 @@ namespace Minesweeper.Core
             }
         }
 
+        /// <summary>
+        /// method for toggling a flag on a tile at the specified coordinates (x, y).
+        /// </summary>
+        /// <param name="x">The x-coordinate of the tile</param>
+        /// <param name="y">The y-coordinate of the tile</param>
+        /// <returns>True if the flag was successfully toggled, false otherwise</returns>
         public bool ToggleFlag(int x, int y)
         {
             if (!InBounds(x, y)) return false;
@@ -126,6 +165,10 @@ namespace Minesweeper.Core
             return true;
         }
 
+        /// <summary>
+        /// method for checking if all non-mine tiles have been revealed, which would indicate a win condition in the game.
+        /// </summary>
+        /// <returns>True if all non-mine tiles have been revealed, false otherwise</returns>
         public bool AllNonMinesRevealed()
         {
             for (int x = 0; x < Size; x++)
@@ -137,6 +180,12 @@ namespace Minesweeper.Core
             return true;
         }
 
+        /// <summary>
+        /// method for checking if entered coords are in bounds of the board 
+        /// </summary>
+        /// <param name="x">The x-coordinate to check</param>
+        /// <param name="y">The y-coordinate to check</param>
+        /// <returns>True if the coordinates are within the bounds of the board, false otherwise</returns>
         public bool InBounds(int x, int y) =>
             x >= 0 && x < Size && y >= 0 && y < Size;
     }
